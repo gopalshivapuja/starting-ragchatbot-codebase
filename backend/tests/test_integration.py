@@ -1,10 +1,12 @@
 """
 Integration tests - Test against real components to identify actual failures.
 """
-import pytest
-import sys
+
 import os
+import sys
 from pathlib import Path
+
+import pytest
 
 # Add backend to path
 backend_path = Path(__file__).parent.parent / "backend"
@@ -14,8 +16,8 @@ sys.path.insert(0, str(backend_path))
 os.environ["ANTHROPIC_API_KEY"] = os.getenv("ANTHROPIC_API_KEY", "test_key")
 
 from config import config
-from vector_store import VectorStore, SearchResults
-from search_tools import CourseSearchTool, CourseOutlineTool, ToolManager
+from search_tools import CourseOutlineTool, CourseSearchTool, ToolManager
+from vector_store import SearchResults, VectorStore
 
 
 @pytest.mark.integration
@@ -25,7 +27,9 @@ class TestVectorStoreIntegration:
     def test_vector_store_with_actual_data(self):
         """Test that vector store has data loaded."""
         # Use actual vector store
-        store = VectorStore(config.CHROMA_PATH, config.EMBEDDING_MODEL, config.MAX_RESULTS)
+        store = VectorStore(
+            config.CHROMA_PATH, config.EMBEDDING_MODEL, config.MAX_RESULTS
+        )
 
         # Check course count
         course_count = store.get_course_count()
@@ -48,7 +52,9 @@ class TestVectorStoreIntegration:
 
     def test_course_search_tool_with_real_db(self):
         """Test CourseSearchTool with actual database."""
-        store = VectorStore(config.CHROMA_PATH, config.EMBEDDING_MODEL, config.MAX_RESULTS)
+        store = VectorStore(
+            config.CHROMA_PATH, config.EMBEDDING_MODEL, config.MAX_RESULTS
+        )
 
         course_count = store.get_course_count()
         if course_count == 0:
