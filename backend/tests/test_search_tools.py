@@ -1,16 +1,18 @@
 """
 Tests for search_tools.py - CourseSearchTool and CourseOutlineTool.
 """
-import pytest
+
 import sys
 from pathlib import Path
 from unittest.mock import Mock, patch
+
+import pytest
 
 # Add backend to path
 backend_path = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_path))
 
-from search_tools import CourseSearchTool, CourseOutlineTool, ToolManager
+from search_tools import CourseOutlineTool, CourseSearchTool, ToolManager
 from vector_store import SearchResults
 
 
@@ -21,13 +23,13 @@ class TestCourseSearchTool:
         """Test successful search that returns results."""
         tool = CourseSearchTool(mock_vector_store)
 
-        result = tool.execute(query="What is covered in lesson 5", course_name="MCP", lesson_number=5)
+        result = tool.execute(
+            query="What is covered in lesson 5", course_name="MCP", lesson_number=5
+        )
 
         # Verify search was called
         mock_vector_store.search.assert_called_once_with(
-            query="What is covered in lesson 5",
-            course_name="MCP",
-            lesson_number=5
+            query="What is covered in lesson 5", course_name="MCP", lesson_number=5
         )
 
         # Verify result format
@@ -44,9 +46,7 @@ class TestCourseSearchTool:
         result = tool.execute(query="What is MCP")
 
         mock_vector_store.search.assert_called_once_with(
-            query="What is MCP",
-            course_name=None,
-            lesson_number=None
+            query="What is MCP", course_name=None, lesson_number=None
         )
 
         assert isinstance(result, str)
@@ -67,9 +67,7 @@ class TestCourseSearchTool:
         result = tool.execute(query="MCP concepts", course_name="MCP")
 
         mock_vector_store.search.assert_called_once_with(
-            query="MCP concepts",
-            course_name="MCP",
-            lesson_number=None
+            query="MCP concepts", course_name="MCP", lesson_number=None
         )
 
         assert isinstance(result, str)
@@ -86,7 +84,9 @@ class TestCourseSearchTool:
         """Test that sources are properly tracked."""
         tool = CourseSearchTool(mock_vector_store)
 
-        tool.execute(query="What is covered in lesson 5", course_name="MCP", lesson_number=5)
+        tool.execute(
+            query="What is covered in lesson 5", course_name="MCP", lesson_number=5
+        )
 
         # Verify sources were tracked
         assert len(tool.last_sources) > 0

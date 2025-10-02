@@ -43,6 +43,30 @@ uv add package-name
 uv lock --upgrade
 ```
 
+### Code Quality Tools
+
+```bash
+# Format code automatically (black + isort)
+./format.sh
+
+# Run all quality checks (black, isort, flake8, mypy)
+./quality_check.sh
+
+# Individual tools
+uv run black backend/              # Format code
+uv run isort backend/              # Sort imports
+uv run flake8 backend/             # Lint code
+uv run mypy backend/               # Type check
+```
+
+**Configured tools:**
+- **black**: Code formatter (line length: 88)
+- **isort**: Import sorter (black-compatible profile)
+- **flake8**: Linter (E203, W503 ignored for black compatibility)
+- **mypy**: Type checker (with lenient settings for gradual typing)
+
+Configuration in `pyproject.toml` under `[tool.black]` and `[tool.isort]` sections.
+
 ### Accessing the Application
 
 - Web Interface: `http://localhost:8000`
