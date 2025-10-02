@@ -4,7 +4,7 @@ Tests for rag_system.py - End-to-end content query testing.
 
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -12,7 +12,7 @@ import pytest
 backend_path = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_path))
 
-from rag_system import RAGSystem
+from rag_system import RAGSystem  # noqa: E402
 
 
 class TestRAGSystemContentQueries:

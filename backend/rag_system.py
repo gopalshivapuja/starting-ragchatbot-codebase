@@ -3,7 +3,7 @@ from typing import Dict, List, Optional, Tuple
 
 from ai_generator import AIGenerator
 from document_processor import DocumentProcessor
-from models import Course, CourseChunk, Lesson
+from models import Course
 from search_tools import CourseOutlineTool, CourseSearchTool, ToolManager
 from session_manager import SessionManager
 from vector_store import VectorStore

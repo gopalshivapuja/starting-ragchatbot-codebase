@@ -15,9 +15,9 @@ sys.path.insert(0, str(backend_path))
 # Set environment variable for testing
 os.environ["ANTHROPIC_API_KEY"] = os.getenv("ANTHROPIC_API_KEY", "test_key")
 
-from config import config
-from search_tools import CourseOutlineTool, CourseSearchTool, ToolManager
-from vector_store import SearchResults, VectorStore
+from config import config  # noqa: E402
+from search_tools import CourseSearchTool  # noqa: E402
+from vector_store import SearchResults, VectorStore  # noqa: E402
 
 
 @pytest.mark.integration
@@ -33,7 +33,7 @@ class TestVectorStoreIntegration:
 
         # Check course count
         course_count = store.get_course_count()
-        print(f"\n[VECTOR STORE STATUS]")
+        print("\n[VECTOR STORE STATUS]")
         print(f"Courses in database: {course_count}")
 
         if course_count == 0:
@@ -64,7 +64,7 @@ class TestVectorStoreIntegration:
 
         result = tool.execute(query="MCP client", course_name="MCP", lesson_number=5)
 
-        print(f"\n[COURSE SEARCH TOOL TEST]")
+        print("\n[COURSE SEARCH TOOL TEST]")
         print(f"Result type: {type(result)}")
         print(f"Result length: {len(result)}")
         print(f"Result preview: {result[:300]}...")

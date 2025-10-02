@@ -4,7 +4,7 @@ Tests for ai_generator.py - Verify AI correctly calls tools.
 
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -12,8 +12,8 @@ import pytest
 backend_path = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_path))
 
-from ai_generator import AIGenerator
-from search_tools import CourseOutlineTool, CourseSearchTool, ToolManager
+from ai_generator import AIGenerator  # noqa: E402
+from search_tools import CourseOutlineTool, CourseSearchTool, ToolManager  # noqa: E402
 
 
 class TestAIGeneratorToolCalling:

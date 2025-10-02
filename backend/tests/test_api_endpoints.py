@@ -2,6 +2,7 @@
 API endpoint tests for the RAG system.
 Tests the FastAPI endpoints for proper request/response handling.
 """
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -11,10 +12,7 @@ class TestQueryEndpoint:
 
     def test_query_with_valid_input(self, test_client):
         """Test query endpoint with valid input."""
-        response = test_client.post(
-            "/api/query",
-            json={"query": "What is MCP?"}
-        )
+        response = test_client.post("/api/query", json={"query": "What is MCP?"})
 
         assert response.status_code == 200
         data = response.json()
@@ -36,10 +34,7 @@ class TestQueryEndpoint:
         """Test query endpoint with existing session ID."""
         response = test_client.post(
             "/api/query",
-            json={
-                "query": "What is MCP?",
-                "session_id": "existing_session"
-            }
+            json={"query": "What is MCP?", "session_id": "existing_session"},
         )
 
         assert response.status_code == 200
@@ -50,20 +45,14 @@ class TestQueryEndpoint:
 
     def test_query_with_empty_string(self, test_client):
         """Test query endpoint with empty query string."""
-        response = test_client.post(
-            "/api/query",
-            json={"query": ""}
-        )
+        response = test_client.post("/api/query", json={"query": ""})
 
         # Should still process (validation at RAG level, not API level)
         assert response.status_code == 200
 
     def test_query_with_missing_query_field(self, test_client):
         """Test query endpoint with missing required field."""
-        response = test_client.post(
-            "/api/query",
-            json={"session_id": "test"}
-        )
+        response = test_client.post("/api/query", json={"session_id": "test"})
 
         # Should return validation error
         assert response.status_code == 422  # Unprocessable Entity
@@ -71,9 +60,7 @@ class TestQueryEndpoint:
     def test_query_with_invalid_json(self, test_client):
         """Test query endpoint with invalid JSON."""
         response = test_client.post(
-            "/api/query",
-            data="not json",
-            headers={"Content-Type": "application/json"}
+            "/api/query", data="not json", headers={"Content-Type": "application/json"}
         )
 
         # Should return validation error
@@ -82,8 +69,7 @@ class TestQueryEndpoint:
     def test_query_with_rag_error(self, test_client):
         """Test query endpoint when RAG system raises an error."""
         response = test_client.post(
-            "/api/query",
-            json={"query": "trigger error in query"}
+            "/api/query", json={"query": "trigger error in query"}
         )
 
         # Should return internal server error
@@ -94,10 +80,7 @@ class TestQueryEndpoint:
 
     def test_query_response_sources_format(self, test_client):
         """Test that sources are returned in correct format."""
-        response = test_client.post(
-            "/api/query",
-            json={"query": "What is MCP?"}
-        )
+        response = test_client.post("/api/query", json={"query": "What is MCP?"})
 
         assert response.status_code == 200
         data = response.json()
@@ -173,8 +156,7 @@ class TestAPIIntegration:
 
         # Then, make a query
         query_response = test_client.post(
-            "/api/query",
-            json={"query": "Tell me about Course A"}
+            "/api/query", json={"query": "Tell me about Course A"}
         )
         assert query_response.status_code == 200
         query_data = query_response.json()
@@ -186,20 +168,13 @@ class TestAPIIntegration:
     def test_multiple_queries_same_session(self, test_client):
         """Test multiple queries with the same session ID."""
         # First query creates session
-        response1 = test_client.post(
-            "/api/query",
-            json={"query": "First question"}
-        )
+        response1 = test_client.post("/api/query", json={"query": "First question"})
         assert response1.status_code == 200
         session_id = response1.json()["session_id"]
 
         # Second query uses same session
         response2 = test_client.post(
-            "/api/query",
-            json={
-                "query": "Follow-up question",
-                "session_id": session_id
-            }
+            "/api/query", json={"query": "Follow-up question", "session_id": session_id}
         )
         assert response2.status_code == 200
 
@@ -216,8 +191,7 @@ class TestAPIIntegration:
     def test_api_error_response_format(self, test_client):
         """Test that API errors follow FastAPI error format."""
         response = test_client.post(
-            "/api/query",
-            json={"query": "trigger error in query"}
+            "/api/query", json={"query": "trigger error in query"}
         )
 
         assert response.status_code == 500

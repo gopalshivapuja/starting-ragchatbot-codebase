@@ -1,18 +1,19 @@
 """
 Pytest fixtures for RAG system tests.
 """
-import pytest
+
 import sys
 from pathlib import Path
-from unittest.mock import Mock, MagicMock
-from typing import List, Dict, Any
+from unittest.mock import Mock
+
+import pytest
 
 # Add backend directory to path for imports
 backend_path = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_path))
 
-from vector_store import SearchResults
-from models import Course, Lesson, CourseChunk
+from models import Course, CourseChunk, Lesson  # noqa: E402
+from vector_store import SearchResults  # noqa: E402
 
 
 @pytest.fixture
@@ -236,10 +237,11 @@ def mock_rag_system():
 @pytest.fixture
 def test_client(mock_rag_system):
     """Create a FastAPI test client with mocked dependencies."""
-    from fastapi.testclient import TestClient
-    from fastapi import FastAPI
-    from pydantic import BaseModel
     from typing import List, Optional, Union
+
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from pydantic import BaseModel
 
     # Create test app without static file mounting
     test_app = FastAPI(title="Test RAG System")

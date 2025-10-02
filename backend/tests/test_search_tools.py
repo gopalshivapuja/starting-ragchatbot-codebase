@@ -4,7 +4,7 @@ Tests for search_tools.py - CourseSearchTool and CourseOutlineTool.
 
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 import pytest
 
@@ -12,8 +12,8 @@ import pytest
 backend_path = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_path))
 
-from search_tools import CourseOutlineTool, CourseSearchTool, ToolManager
-from vector_store import SearchResults
+from search_tools import CourseOutlineTool, CourseSearchTool, ToolManager  # noqa: E402
+from vector_store import SearchResults  # noqa: E402
 
 
 class TestCourseSearchTool:
